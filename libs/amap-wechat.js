@@ -1,5 +1,7 @@
-module.exports = {
-  getRegeo: function(options) {
+function AMapWX(params){
+  this.key = params.key
+  this.getRegeo = function(options) {
+    var that = this;
     wx.getLocation({
       type: 'wgs84',
       success: function(res) {
@@ -7,12 +9,12 @@ module.exports = {
         wx.request({
           url: 'https://restapi.amap.com/v3/geocode/regeo', 
           data: {
-            key: options.key,
+            key: that.key,
             location: lnglat,
             extensions: 'all',
             s: 'rsv3',
             platform: 'WXJS',
-            appname: options.key,
+            appname: that.key,
             sdkversion: '1.0.0'
           },
           method: 'GET',
@@ -58,7 +60,10 @@ module.exports = {
               }]
               options.success(result);
             }else{
-              options.fail(data.data)
+              options.fail({
+                errCode: data.data.infocode,
+                errMsg: data.data.info
+              })
             }
           },
           fail: function(info) {
@@ -76,18 +81,19 @@ module.exports = {
         })
       }
     })
-  },
-  getWeather: function(options) {
+  }
+  this.getWeather = function(options) {
+    var that = this;
     function getWeatherData(adcode){
       wx.request({
         url: 'https://restapi.amap.com/v3/weather/weatherInfo', 
         data: {
-          key: options.key,
+          key: that.key,
           city: adcode,
           extension: 'base',
           s: 'rsv3',
           platform: 'WXJS',
-          appname: options.key,
+          appname: that.key,
           sdkversion: '1.0.0'
         },
         method: 'GET',
@@ -130,7 +136,10 @@ module.exports = {
               options.success(weatherData)
             }
           }else{
-            options.fail(data.data)
+            options.fail({
+              errCode: data.data.infocode,
+              errMsg: data.data.info
+            })
           }
         },
         fail: function(info) {
@@ -148,12 +157,12 @@ module.exports = {
         wx.request({
           url: 'https://restapi.amap.com/v3/geocode/regeo', 
           data: {
-            key: options.key,
+            key: that.key,
             location: lnglat,
             extensions: 'all',
             s: 'rsv3',
             platform: 'WXJS',
-            appname: options.key,
+            appname: that.key,
             sdkversion: '1.0.0'
           },
           method: 'GET',
@@ -172,7 +181,10 @@ module.exports = {
               }
               getWeatherData(adcode);
             }else{
-              options.fail(data.data)
+              options.fail({
+                errCode: data.data.infocode,
+                errMsg: data.data.info
+              })
             }
           },
           fail: function(info) {
@@ -190,8 +202,9 @@ module.exports = {
         })
       }
     })
-  },
-  getPoiAround: function(options) {
+  }
+  this.getPoiAround = function(options) {
+    var that = this;
     wx.getLocation({
       type: 'wgs84',
       success: function(res) {
@@ -199,11 +212,11 @@ module.exports = {
         wx.request({
           url: 'https://restapi.amap.com/v3/place/around', 
           data: {
-            key: options.key,
+            key: that.key,
             location: lnglat,
             s: 'rsv3',
             platform: 'WXJS',
-            appname: options.key,
+            appname: that.key,
             sdkversion: '1.0.0'
           },
           method: 'GET',
@@ -236,7 +249,10 @@ module.exports = {
                 options.success(poiData)
               }
             }else{
-              options.fail(data.data)
+              options.fail({
+                errCode: data.data.infocode,
+                errMsg: data.data.info
+              })
             }
           },
           fail: function(info) {
@@ -256,3 +272,4 @@ module.exports = {
     })
   }
 }
+module.exports.AMapWX = AMapWX;

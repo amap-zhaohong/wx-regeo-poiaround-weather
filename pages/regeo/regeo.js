@@ -1,4 +1,4 @@
-var amapFun = require('../../libs/amap-wechat.js')
+var amapFile = require('../../libs/amap-wechat.js')
 Page({
   data: {
     markers: [],
@@ -8,8 +8,8 @@ Page({
   },
   onLoad: function() {
     var that = this;
-    amapFun.getRegeo({
-      key: 'cb7451f9617b611b89c048ce5b34daa7',
+    var myAmapFun = new amapFile.AMapWX({key:'cb7451f9617b611b89c048ce5b34daa7'});
+    myAmapFun.getRegeo({
       iconPath: "../../../img/marker.png",
       iconWidth: 22,
       iconHeight: 32,

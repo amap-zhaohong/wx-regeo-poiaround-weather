@@ -1,5 +1,4 @@
-var amapFun = require('../../libs/amap-wechat.js')
-
+var amapFile = require('../../libs/amap-wechat.js')
 var markersData = [];
 Page({
   data: {
@@ -16,8 +15,8 @@ Page({
   },
   onLoad: function() {
     var that = this;
-    amapFun.getPoiAround({
-      key: 'cb7451f9617b611b89c048ce5b34daa7',
+    var myAmapFun = new amapFile.AMapWX({key:'cb7451f9617b611b89c048ce5b34daa7'});
+    myAmapFun.getPoiAround({
       iconPathSelected: '../../../img/marker_checked.png',
       iconPath: '../../../img/marker.png',
       success: function(data){
